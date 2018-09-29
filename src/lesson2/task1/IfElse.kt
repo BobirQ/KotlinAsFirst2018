@@ -2,6 +2,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -62,7 +63,26 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String  {
+    val h: Int = age % 100
+    var s: String = ""
+    if (h < 21) {
+        if (h == 1)
+            s = "$age год"
+        else if (h > 1 && h < 5)
+            s = "$age года"
+        else
+            s = "$age лет"
+    } else if (h > 20) {
+        if (h % 10 == 1)
+            s = "$age год"
+        else if ((h % 10) > 1 && (h % 10) < 5)
+            s = "$age года"
+        else
+            s = "$age лет"
+    }
+    return s
+}
 
 /**
  * Простая
@@ -73,7 +93,23 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    var s1: Double = t1 * v1
+    var s2: Double = t2 * v2
+    var s3: Double = t3 * v3
+    var tHalf: Double
+    val sHalf : Double= (s1 + s2 + s3)/2
+    if(sHalf <= s1)
+        tHalf = sHalf / v1
+    else if(sHalf > s1 && sHalf <= (s1 + s2))
+        tHalf = t1 + (sHalf - s1) / v2
+    else
+        tHalf = t1 + t2 + (sHalf - s1 - s2)/v3
+    return tHalf
+
+
+
+}
 
 /**
  * Простая
@@ -86,7 +122,19 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int
+{
+    var s: Int
+    if((kingX != rookX1 && kingY != rookY1) && (kingX != rookX2 && kingY != rookY2))
+        s = 0
+    else if((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2))
+        s = 1
+    else if((kingX != rookX1 && kingY != rookY1) && (kingX == rookX2 || kingY == rookY2))
+        s = 2
+    else
+        s = 3
+    return s
+}
 
 /**
  * Простая
@@ -100,7 +148,19 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int
+{
+    var s: Int
+    if((kingX != rookX && kingY != rookY) && (kingX + kingY != bishopX + bishopY))
+        s = 0
+    else if((kingX == rookX || kingY == rookY) && (kingX + kingY != bishopX + bishopY))
+        s = 1
+    else if((kingX != rookX && kingY != rookY) && (kingX + kingY == bishopX + bishopY))
+        s = 2
+    else
+        s =3
+    return s
+}
 
 /**
  * Простая
@@ -110,7 +170,23 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int
+{
+    var r: Int
+    var n1: Double = sqr(a) + sqr(b)
+    var n2: Double = sqr(a) + sqr(c)
+    var n3: Double = sqr(b) + sqr(c)
+
+    if(sqr(a) < n3 || sqr(b) < n2 || sqr(c) < n1)
+        r = 0
+    else if(sqr(a) == n3 || sqr(b) == n2 || sqr(c) == n1)
+        r = 1
+    else if (sqr(a) > n3 || sqr(b) > n2 || sqr(c) > n1)
+        r = 2
+    else
+        r = -1
+    return r
+}
 
 /**
  * Средняя
