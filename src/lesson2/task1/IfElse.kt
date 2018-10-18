@@ -3,6 +3,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -63,27 +64,24 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String  {
+fun ageDescription(age: Int): String {
     val h: Int = age % 100
-    var s: String = ""
-    if (h < 21) {
-        if (h == 1)
-            s = "$age год"
-        else if (h > 1 && h < 5)
-            s = "$age года"
+        if (h < 21) {
+            return when {
+                h == 1 -> "$age год"
+                h in 2..4 -> "$age года"
+                else -> "$age лет"
+            }
+        } else if (h > 20) {
+            return when {
+                (h % 10 == 1) -> "$age год"
+                ((h % 10) > 1 && (h % 10) < 5) -> "$age года"
+                else -> "$age лет"
+            }
+        }
         else
-            s = "$age лет"
-    } else if (h > 20) {
-        if (h % 10 == 1)
-            s = "$age год"
-        else if ((h % 10) > 1 && (h % 10) < 5)
-            s = "$age года"
-        else
-            s = "$age лет"
+            return ""
     }
-    return s
-}
-
 /**
  * Простая
  *
@@ -94,19 +92,15 @@ fun ageDescription(age: Int): String  {
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    var s1: Double = t1 * v1
-    var s2: Double = t2 * v2
-    var s3: Double = t3 * v3
-    var tHalf: Double
-    val sHalf : Double= (s1 + s2 + s3)/2
-    if(sHalf <= s1)
-        tHalf = sHalf / v1
-    else if(sHalf > s1 && sHalf <= (s1 + s2))
-        tHalf = t1 + (sHalf - s1) / v2
-    else
-        tHalf = t1 + t2 + (sHalf - s1 - s2)/v3
-    return tHalf
-
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    val s3 = t3 * v3
+    val sHalf : Double = (s1 + s2 + s3)/2
+    return when {
+        sHalf <= s1 -> sHalf / v1
+        sHalf > s1 && sHalf <= (s1 + s2) -> t1 + (sHalf - s1) / v2
+        else -> t1 + t2 + (sHalf - s1 - s2) / v3
+    }
 
 
 }
@@ -124,16 +118,12 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int
 {
-    var s: Int
-    if((kingX != rookX1 && kingY != rookY1) && (kingX != rookX2 && kingY != rookY2))
-        s = 0
-    else if((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2))
-        s = 1
-    else if((kingX != rookX1 && kingY != rookY1) && (kingX == rookX2 || kingY == rookY2))
-        s = 2
-    else
-        s = 3
-    return s
+    return when {
+        (kingX != rookX1 && kingY != rookY1) && (kingX != rookX2 && kingY != rookY2) -> 0
+        (kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2) -> 1
+        (kingX != rookX1 && kingY != rookY1) && (kingX == rookX2 || kingY == rookY2) -> 2
+        else -> 3
+    }
 }
 
 /**
@@ -148,20 +138,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int
-{
-    var s: Int
-    if((kingX != rookX && kingY != rookY) && (kingX + kingY != bishopX + bishopY))
-        s = 0
-    else if((kingX == rookX || kingY == rookY) && (kingX + kingY != bishopX + bishopY))
-        s = 1
-    else if((kingX != rookX && kingY != rookY) && (kingX + kingY == bishopX + bishopY))
-        s = 2
-    else
-        s =3
-    return s
+                          bishopX: Int, bishopY: Int): Int {
+    return when {
+        ((kingX != rookX && kingY != rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) -> 0
+        ((kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) -> 1
+        ((kingX != rookX && kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) -> 2
+        else -> 3
+    }
 }
-
 /**
  * Простая
  *
@@ -170,24 +154,24 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int
-{
-    var r: Int
-    var n1: Double = sqr(a) + sqr(b)
-    var n2: Double = sqr(a) + sqr(c)
-    var n3: Double = sqr(b) + sqr(c)
-
-    if(sqr(a) < n3 || sqr(b) < n2 || sqr(c) < n1)
-        r = 0
-    else if(sqr(a) == n3 || sqr(b) == n2 || sqr(c) == n1)
-        r = 1
-    else if (sqr(a) > n3 || sqr(b) > n2 || sqr(c) > n1)
-        r = 2
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    var x: Double
+    var y: Double
+    var z: Double
+    if(a <(b + c) && b < (a + c) && c < (a + b)) {
+        if (a > b)
+            if (a > c) { z = a; x = c; y = b } else { z = c; x = a; y = b }
+        else
+            if (b > c) { z = b; x = a; y = c } else { z = c; x = a; y = b }
+        return when {
+            sqr(z) < (sqr(x) + sqr(y)) -> 0
+            sqr(z) == (sqr(x) + sqr(y)) -> 1
+            else -> 2
+        }
+    }
     else
-        r = -1
-    return r
+        return -1
 }
-
 /**
  * Средняя
  *
@@ -196,4 +180,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int
+{
+    if(b >= c && d >= a)
+        return when {
+            (a >= c && d >= b) -> b - a
+            (a < c && d >= b) -> b - c
+            (a >= c && d < b) -> d - a
+            else -> d - c
+        }
+    else
+        return -1
+}
