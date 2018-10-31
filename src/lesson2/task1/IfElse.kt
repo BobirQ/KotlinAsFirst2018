@@ -72,9 +72,9 @@ fun ageDescription(age: Int): String {
             in 2..4 -> "$age года"
             else -> "$age лет"
         }
-        else -> when {
-            (h % 10 == 1) -> "$age год"
-            (h % 10) in 2..4 -> "$age года"
+        else -> when (h % 10) {
+            1 -> "$age год"
+            in 2..4 -> "$age года"
             else -> "$age лет"
         }
     }
@@ -162,8 +162,8 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val x = maxOf(a, b, c)
     val y = minOf(a, b, c)
-    val z =(maxOf(a, b, c) + minOf(a, b, c)) / 2
-    return if(a <(b + c) && b < (a + c) && c < (a + b)) {
+    val z = (maxOf(a, b, c) + minOf(a, b, c)) / 2
+    return if (a < (b + c) && b < (a + c) && c < (a + b)) {
         when {
             sqr(x) < sqr(y) + sqr(z) -> 0
             sqr(x) == sqr(y) + sqr(z) -> 1
@@ -179,9 +179,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int
-{
-    return if(b >= c && d >= a)
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return if (b >= c && d >= a)
         when {
             (a >= c && d >= b) -> b - a
             (a < c && d >= b) -> b - c
