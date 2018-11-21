@@ -1,6 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import lesson1.task1.sqr
+import java.lang.Math.pow
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 /**
@@ -11,7 +14,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result *= i // Please do not fix in master
+        result = result * i // Please do not fix in master
     }
     return result
 }
@@ -103,13 +106,16 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var x = 0
-    for(i in 1 until m * n)
-        if(i % m == 0 && i % n == 0) {
-            x = i
-            break
-        }
-    return x
+    var x = maxOf(m, n)
+    var y = minOf(m, n)
+    if (x % y == 0)
+        return x
+    while (x % y != 0) {
+        val temp = y
+        y = x % y
+        x = temp
+    }
+    return m * n / y
 }
 
 /**
@@ -151,7 +157,14 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var x = 0
+    for (i in 1..n) {
+        if (m % i == 0 && n % i == 0)
+            x++
+    }
+    return (x == 1)
+}
 
 /**
  * Простая
@@ -160,7 +173,17 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var x = 0
+    if (m == 0 && n == 0)
+        return true
+    while (x <= m) {
+        x++
+        if (sqrt(m.toDouble()) <= x && x <= sqrt(n.toDouble()))
+            return true
+    }
+    return false
+}
 
 /**
  * Средняя
@@ -242,7 +265,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя
@@ -252,7 +275,15 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    val x = n % 10
+    var y = n / 10
+    while (y > 0) {
+        if (y % 10 != x) return true
+        y /= 10
+    }
+    return false
+}
 
 /**
  * Сложная
@@ -263,7 +294,17 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var m = n
+    var k = 0
+    while (m > 0) {
+
+        k++
+        m -= digitNumber(sqr(k))
+    }
+    m = abs(m)
+    return k * k / pow(10.0, m.toDouble()).toInt() % 10
+}
 
 /**
  * Сложная
