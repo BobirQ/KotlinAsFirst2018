@@ -160,16 +160,15 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val x = maxOf(a, b, c)
-    val y = minOf(a, b, c)
-    val z = (maxOf(a, b, c) + minOf(a, b, c)) / 2
-    return if (a < (b + c) && b < (a + c) && c < (a + b)) {
-        when {
-            sqr(x) < sqr(y) + sqr(z) -> 0
-            sqr(x) == sqr(y) + sqr(z) -> 1
-            else -> 2
-        }
-    } else -1
+    val x = a * a
+    val y = b * b
+    val z = c * c
+    return when {
+        (a > b + c || b > a + c || c > a + b) -> -1
+        (x == y + z || y == x + z || z == x + y) -> 1
+        (x > y + z || y > x + z || z > x + y) -> 2
+        else -> 0
+    }
 }
 /**
  * Средняя

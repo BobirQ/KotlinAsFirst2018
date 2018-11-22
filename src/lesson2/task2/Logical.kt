@@ -75,6 +75,4 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(x: Int, y: Int, z: Int, a: Int, b: Int): Boolean =
-(a >= x && b >= y) || (a >= y && b >= x)
-|| (a >= x && b >= z) || (a >= z && b >= x)
-|| (a >= z && b >= y) || (a >= y && b >= z)
+    (a >= x && b >= y) || (a >= y && b >= x) || (a >= x && b >= z) || (a >= z && b >= x) || (a >= z && b >= y) || (a >= y && b >= z)
