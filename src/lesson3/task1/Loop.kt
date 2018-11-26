@@ -70,14 +70,14 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-        var m = 0
-        var k = n
-        if (k == 0) m = 1
-        while(k != 0) {
-            k /= 10
-            m += 1
-        }
-        return m
+    var m = 0
+    var k = n
+    do {
+        k /= 10
+        m++
+    }
+    while (k != 0)
+    return m
 }
 
 /**
@@ -89,7 +89,7 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var x = 1
     var y = 1
-    return if(n <= 2) 1
+    return if (n <= 2) 1
     else {
         for (m in 3..n) {
             y += x
@@ -97,7 +97,6 @@ fun fib(n: Int): Int {
         }
         y
     }
-
 }
 /**
  * Простая
@@ -174,12 +173,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var x = 0
+    val a = sqrt(m.toDouble())
+    val b = sqrt(n.toDouble())
     if (m == 0 && n == 0)
         return true
-    while (x <= m) {
-        x++
-        if (sqrt(m.toDouble()) <= x && x <= sqrt(n.toDouble()))
+    for (x in 0 .. m) {
+        if (x in a..b)
             return true
     }
     return false
@@ -204,19 +203,12 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
 fun collatzSteps(x: Int): Int {
     var count = 0
     var m = x
-
-    if(m != 1){
-        do {
-            if (m % 2 == 0) {
-                m /= 2
-                count++
-            }
-            else {
-                m = 3 * m + 1
-                count++
-            }
-        }
-        while(m != 1)
+    while (m != 1) {
+        if (m % 2 == 0)
+            m /= 2
+        else
+            m = 3 * m + 1
+        count++
     }
     return count
 }
