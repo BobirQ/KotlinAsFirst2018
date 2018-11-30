@@ -230,7 +230,8 @@ fun mostExpensive(description: String): String {
             }
         }
         answer
-    } catch (e: NumberFormatException) {
+    }
+    catch (e: NumberFormatException) {
         ""
     }
 }
