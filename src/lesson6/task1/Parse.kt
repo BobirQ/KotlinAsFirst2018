@@ -72,7 +72,6 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String = TODO()
-
 /**
  * Средняя
  *
@@ -97,7 +96,29 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    if (phone.isEmpty())
+        return ""
+    if (phone == " ")
+        return ""
+    val char = setOf(' ', '-', '(', ')')
+    val result = StringBuilder()
+    val list = StringBuilder(phone.trim())
+    if (list[0] == '+') {
+        if (list.length == 1)
+            return ""
+        result.append('+')
+        list.deleteCharAt(0)
+    }
+    for (i in list) {
+        if (i.isDigit())
+            result.append(i)
+        if (!(i.isDigit() || char.contains(i)))
+            return ""
+
+    }
+    return result.toString()
+}
 
 /**
  * Средняя
@@ -109,7 +130,25 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val jump = StringBuilder(jumps)
+    val list = StringBuilder()
+    val symbol = setOf(' ', '%', '-')
+    try {
+        for (i in jump) {
+            if (!symbol.contains(i))
+                list.append(i)
+            if (symbol.contains(i))
+                list.append(" ")
+            if (!i.isDigit() && i == '+')
+                return -1
+        }
+        val answer = list.trim().split(" ")
+        return answer.max()!!.toInt()
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
@@ -121,7 +160,14 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val part = jumps.split(" ")
+    val list = mutableListOf<String>()
+    for (i in 1 until part.size step 2)
+        if (part[i] == "+")
+            list.add(part[i - 1])
+    return list.map { it.toInt() }.max() ?: -1
+}
 
 /**
  * Сложная
@@ -143,7 +189,18 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val list = str.split(" ")
+    var word = ""
+    var index = -1
+    for (i in list) {
+        if (word.toLowerCase() == i.toLowerCase())
+            return index
+        index += word.length + 1
+        word = i
+    }
+    return -1
+}
 
 /**
  * Сложная
@@ -156,7 +213,27 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (description == "")
+        return ""
+    val list = description.split("; ")
+    var result = -1.0
+    var answer = ""
+    return try {
+        for (i in list) {
+            val price = i.split(" ")
+            for ((j, e) in price.withIndex()) {
+                if (j == 1)
+                    result = maxOf(e.toDouble(), result)
+                if (result.toString() in i)
+                    answer = price[0]
+            }
+        }
+        answer
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
 
 /**
  * Сложная
@@ -169,7 +246,26 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    if (roman.isEmpty())
+        return -1
+    val dNumber = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val rNumber = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val number = StringBuilder(roman)
+    var index = 0
+    var result = 0
+    while (number.isNotEmpty()) {
+        if (number.indexOf(rNumber[index]) == 0) {
+            result += dNumber[index]
+            number.delete(0, rNumber[index].length)
+        }
+        else
+            index++
+        if (index == rNumber.size)
+            return -1
+    }
+    return result
+}
 
 /**
  * Очень сложная
