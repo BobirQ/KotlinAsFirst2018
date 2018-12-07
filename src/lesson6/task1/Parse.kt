@@ -255,6 +255,7 @@ fun fromRoman(roman: String): Int {
     val number = StringBuilder(roman)
     var index = 0
     var result = 0
+
     while (number.isNotEmpty()) {
         if (number.indexOf(rNumber[index]) == 0) {
             result += dNumber[index]
